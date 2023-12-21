@@ -27,18 +27,25 @@ app.use(express.urlencoded({extended: true})) //how we access req.body!!!
 
 
 //New - GET (form to create a new book)
-
+app.get("/books/new", (req, res) => {
+    //render the create form
+    res.render("new.ejs")
+})
 
 
 //Create - POST (new book)
 app.post("/books", async (req, res) => {
-    if (req.body.completed === "on") {
-        req.body.completed = true
-    }  else {
-        req.body.completed = false
-    }
-    let newBook = await Book.create(req.body)
-    res.send(newBook)
+     try { 
+        if (req.body.completed === "on") {
+            req.body.completed = true
+        }  else {
+            req.body.completed = false
+        }
+        let newBook = await Book.create(req.body)
+        res.send(newBook)
+        } catch (err) {
+        res.send(err)
+        }
 })
 
 
