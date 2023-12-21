@@ -23,7 +23,14 @@ app.use(express.urlencoded({extended: true})) //how we access req.body!!!
 //ROUTES & ROUTER
 
 //Index - GET to render all books
-
+app.get("/books", async (req, res) => {
+    //find all the books and render them all
+    let books = await Book.find({})
+    //render them to index.ejs
+    res.render("index.ejs", {
+        books: books.reverse()
+    })
+})
 
 
 //New - GET (form to create a new book)
@@ -42,7 +49,7 @@ app.post("/books", async (req, res) => {
             req.body.completed = false
         }
         let newBook = await Book.create(req.body)
-        res.send(newBook)
+        res.redirect("/books")
         } catch (err) {
         res.send(err)
         }
